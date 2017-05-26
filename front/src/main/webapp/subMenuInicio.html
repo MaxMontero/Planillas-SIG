@@ -1,0 +1,26 @@
+<div class="row">
+    <div class="col-md-3 col-sm-4" ng-repeat="s in menu" style="margin-bottom: 25px">
+        <div class="feed-box text-center">
+            <a href ng-click="menuToggle($event,s)">
+            <section class="panel" style="margin-bottom: 3px;" >
+                <div style="padding: 5px;min-height: 147px;color:{{color}}" >
+                    <img alt="" src="../recursos/img/module.png">
+                    <h5 style="font-weight: bold;font-size: 15px">{{s.nombre}}</h5>
+                    <p>{{s.descripcion}}</p>
+                </div>
+            </section>
+            </a>
+        </div>
+        <div style="height: 360px;overflow: auto;width: calc( 100% - 30px );position: absolute;background: #f1f2f7;z-index: 100;" ng-class="{'visible':subModNom==(movil? s.codigo: s.nombre),'hidden':subModNom!=(movil? s.codigo: s.nombre)}">
+        <div class="feed-box text-center" ng-repeat="f in s.funciones">
+            <section class="panel miPanel" style="margin-bottom: 3px;color:{{color}}">
+                <a href ng-click="elegirVista(f,s)">
+                <div style="padding: 5px;color:{{color}}">
+                    <h5 style="margin: 5px 0;">{{f.nombre}}</h5>
+                </div>
+                </a>
+            </section>
+        </div>
+        </div>
+    </div>
+</div>

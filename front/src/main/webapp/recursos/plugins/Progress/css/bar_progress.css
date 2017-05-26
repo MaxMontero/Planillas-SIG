@@ -1,0 +1,24 @@
+
+  #progress_bar {
+    margin: 10px 0;
+    padding: 3px;
+    border: 1px solid #000;
+    font-size: 14px;
+    height: 20px;
+    opacity: 0;
+    -moz-transition: opacity 1s linear;
+    -o-transition: opacity 1s linear;
+    -webkit-transition: opacity 1s linear;
+  }
+  #progress_bar.loading {
+    height: 20px;
+    opacity: 1.0;
+    z-index: -1;
+  }
+  
+  #progress_bar .percent {
+    height:15px;
+    background-color: #99ccff;
+    z-index: -1;
+  }
+

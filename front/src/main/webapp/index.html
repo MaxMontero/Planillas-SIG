@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+<meta charset="utf-8">
+<!-- <> -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>SIG</title>
+<link rel="shortcut icon" href="recursos/img/icon.png">
+
+<!--Core CSS -->
+<link href="recursos/css/bootstrap.min.css" rel="stylesheet">
+<link href="recursos/css/angular-material.min.css" rel="stylesheet">
+<link href="recursos/css/font-awesome.css" rel="stylesheet" />
+<!--Gritter -->
+<link href="recursos/plugins/gritter/css/jquery.gritter.css"
+	rel="stylesheet" />
+<!-- FullCalendar -->
+<link href="recursos/plugins/fullcalendar/fullcalendar.min.css"
+	rel="stylesheet" />
+
+<!--Ng-Table-->
+<link href="recursos/plugins/ng-table/ng-table.min.css"
+	rel="stylesheet">
+
+<!-- Custom styles for this template -->
+<link href="recursos/css/style.css" rel="stylesheet">
+<link href="recursos/css/style-responsive.css" rel="stylesheet" />
+
+<!-- estilo de tree -->
+<link rel="stylesheet" type="text/css"
+	href="recursos/plugins/TreeView/css/tree-control.css">
+<link rel="stylesheet" type="text/css"
+	href="recursos/plugins/TreeView/css/tree-control-attribute.css">
+
+<!--Progreso barra-->
+<link rel="stylesheet" type="text/css"
+	href="recursos/plugins/Progress/css/bar_progress.css">
+
+<!-- Autocomplete input text-->
+<link rel="stylesheet" type="text/css"
+	href="recursos/plugins/angucomplete-alt/css/angucomplete-alt.css">
+
+<!-- Angular Material -->
+<!--    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">-->
+
+
+</head>
+
+<body>
+
+	<section id="container" ng-cloak="">
+
+		<!--header start-->
+		<header class="header fixed-top clearfix">
+			<!--logo start-->
+			<div class="lado-izq">
+				<div class="brand">
+					<a href class="logo"> <img src="recursos/img/logo.png" alt="">
+					</a>
+					<div class="sidebar-toggle-box">
+						<div class="fa fa-bars" ng-click="ocultarMenu()"></div>
+					</div>
+				</div>
+				<div class="nav menu-principal" id="top_menu">
+					<!--  notification start -->
+					<ul class="nav top-menu">
+						<!-- settings start -->
+						<li class="dropdown" ng-repeat="mp in menuPrincipal"><a href
+							ng-click="elegirMenu(mp)" title="{{mp.nombre}}"> <i
+								class="fa fa-tasks"></i>
+						</a></li>
+						<li class="dropdown"><a href="#menuPersonalizado"
+							title="ver menu personalizado"> <i class="fa fa-sitemap"></i>
+						</a></li>
+						<!-- notification dropdown end -->
+					</ul>
+					<!--  notification end -->
+				</div>
+			</div>
+			<div class="lado-cen">
+				<div class="nombre-institucion">
+					<span class="widget-h nombre">{{movil?usuMaster.organizacion.alias:usuMaster.organizacion.nombre}}</span>
+				</div>
+			</div>
+			<!--logo end-->
+			<div class="lado-der">
+				<div class="nav notify-row" id="top_menu">
+					<!--  notification start -->
+					<ul class="nav top-menu">
+						<li class="dropdown"><a class="dropdown-toggle"
+							ng-click="verAyuda()"> <i class="fa fa-question"
+								style="font-size: 19px; padding: 0 2px;"></i>
+						</a></li>
+						<!-- inbox dropdown start-->
+						<mensajes mensajes="mensajes" funcion="verMensaje"></mensajes>
+						<!-- inbox dropdown end -->
+						<notificaciones notificaciones="notificaciones"
+							funcion="verAlerta"></notificaciones>
+					</ul>
+					<!--  notification end -->
+				</div>
+				<div class="top-nav clearfix">
+
+					<ul class="nav top-menu">
+
+						<li class="dropdown" style="margin-left: 0"><a
+							data-toggle="dropdown" class="dropdown-toggle icon-user" href>
+								<!--<img alt="" src="/recursos/img/avatar1_small.jpg">--> <i
+								class="fa fa-user"></i> <span class="username">Usuario</span> <b
+								class="caret"></b>
+						</a>
+							<ul class="dropdown-menu extended logout">
+								<li><a href="#perfilUsuario"><i class=" fa fa-suitcase"></i>Perfil</a></li>
+								<li><a href><i class="fa fa-cog"></i>Configuracion</a></li>
+								<li><a href ng-click="cerrarSession()"><i
+										class="fa fa-key"></i>Cerrar Session</a></li>
+							</ul></li>
+						<!-- user login dropdown end -->
+						<li>
+							<div class="toggle-right-box">
+								<div class="fa fa-bars" ng-click="mostrarMenuDerecha()"></div>
+							</div>
+						</li>
+					</ul>
+					<!--search & user info end-->
+				</div>
+			</div>
+		</header>
+		<!--header end-->
+
+		<aside>
+			<div id="sidebar" class="nav-collapse">
+				<div class="usuario-panel">
+					<div class="col-xs-3 imagen">
+						<img src="recursos/img/avatar1_small.jpg"
+							class="imagen-usuario img-circle" alt="User Image">
+					</div>
+					<div class="col-xs-9 info"
+						style="padding: 0 0 0 5px;; word-wrap: break-word;">
+						<p>{{usuMaster.usuario.nombre}}</p>
+						<p style="word-wrap: break-word; margin-bottom: 0">{{usuMaster.rol.nombre}}</p>
+					</div>
+				</div>
+				<!-- sidebar menu start-->
+				<div class="leftside-navigation">
+					<ul class="sidebar-menu" id="nav-accordion">
+						<li class="sub-menu" ng-repeat="m in menu"
+							ng-class="{'activo':subModNom==(movil? m.codigo: m.nombre)}">
+							<a href ng-click="menuToggle($event,m)"> <i
+								class="fa fa-laptop"></i> <span style="width: 175px;">{{m.nombre}}</span>
+								<i class="fa fa-angle-right "></i>
+						</a>
+							<ul class="sub">
+								<li ng-repeat="sm in m.funciones"><a href
+									ng-click="elegirVista(sm)"
+									ng-class="{'select':visNom==sm.nombre}">{{sm.nombre}}</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+
+				<!-- sidebar menu end-->
+			</div>
+
+		</aside>
+		<!--sidebar end-->
+		<!--main content start-->
+		<section id="main-content" class="merge-right">
+			<div class="content-back fade"></div>
+
+			<section class="wrapper" style="background: #f1f2f7">
+				<div class="row">
+					<div class="col-md-12">
+						<!--breadcrumbs start -->
+						<ul class="breadcrumb" style="text-transform: uppercase;">
+							<li><a href ng-click="inicio()"><i class="fa fa-home"></i><span
+									ng-hide="movil">Inicio</span></a></li>
+							<li ng-hide='modNom==""'>{{modNom}}</li>
+							<li ng-hide='subModNom==""'>{{subModNom}}</li>
+							<li class="active" ng-hide='visNom==""'>{{visNom}}</li>
+						</ul>
+						<!--breadcrumbs end -->
+					</div>
+				</div>
+				<div ng-view></div>
+
+			</section>
+		</section>
+		<!--main content end-->
+		<!--right sidebar start-->
+		<div class="right-sidebar hide-right-bar">
+			<noticias noticias="noticias"></noticias>
+
+			<div class="calendario">
+				<header class="chat-head">
+					<a href="#calendario">Calendario</a>
+				</header>
+				<div uib-datepicker ng-model="dt" class="well well-sm"></div>
+			</div>
+
+			<!--chat start-->
+			<chat></chat>
+			<!--chat end-->
+
+
+		</div>
+		<!--right sidebar end-->
+
+	</section>
+
+	<!-- Modal -->
+	<div class="modal fade" id="modalAyuda" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog" style="max-width: 1200px; width: 100%;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">{{subModNom}}</h4>
+				</div>
+				<div class="tabla-responsiva" style="position: relative;">
+					<div class="form-panel " style="min-width: 1000px">
+						<img style="width: 100%" ng-src="/archivos/tutorial/{{imgAyuda}}">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<!-- REQUIRED JS SCRIPTS -->
+
+	<!-- JQuery -->
+	<script src="recursos/js/jquery-1.10.2.min.js"></script>
+	<!-- Bootstrap -->
+	<script src="recursos/js/bootstrap.min.js"></script>
+	<script src="recursos/js/bootstrap-inputmask.min.js"></script>
+	<!-- Gritter -->
+	<script src="recursos/plugins/gritter/js/jquery.gritter.js"></script>
+
+	<!-- FullCalendar -->
+	<script src="recursos/plugins/fullcalendar/moment.min.js"></script>
+	<script src="recursos/plugins/fullcalendar/fullcalendar.min.js"></script>
+	<script src="recursos/plugins/fullcalendar/locale/es.js"></script>
+
+	<!-- Angular -->
+	<script src="recursos/js/angular.min.js"></script>
+	<script src="recursos/js/angular-route.js"></script>
+	<script src="recursos/js/angular-animate.min.js"></script>
+	<script src="recursos/js/angular-touch.min.js"></script>
+	<script src="recursos/js/angular-messages.min.js"></script>
+	<script src="recursos/js/angular-aria.min.js"></script>
+	<script src="recursos/js/angular-material.min.js"></script>
+
+	<!-- BootstrapUI -->
+	<script src="recursos/js/ui-bootstrap-tpls-1.3.3.min.js"></script>
+	<script src="recursos/js/angular-locale_es-pe.js"></script>
+
+	<!--Ng-Table-->
+	<script src="recursos/plugins/ng-table/ng-table.min.js"></script>
+	<script src="recursos/plugins/ng-table/lodash.min.js"></script>
+
+	<!--angular-chart.js-->
+	<script src="recursos/plugins/angular-chart.js/Chart.min.js"></script>
+	<script src="recursos/plugins/angular-chart.js/angular-chart.min.js"></script>
+	<!-- Mi App -->
+	<script src="app/app.js"></script>
+	<script type="text/javascript" src="app/mis-servicios.js"></script>
+	<script type="text/javascript" src="app/mis-directivas.js"></script>
+
+	<script src="recursos/js/angular-modal-service.js"></script>
+	<!-- Tree -->
+	<script src="recursos/plugins/TreeView/js/angular-tree-control.js"></script>
+
+	<!-- Autocomplete  -->
+	<script
+		src="recursos/plugins/angucomplete-alt/js/angucomplete-alt.min.js"></script>
+
+	<!-- Menu Contextual -->
+	<script src="recursos/plugins/ContextMenu/js/contextMenu.js"></script>
+
+	
+</body>
+</html>
